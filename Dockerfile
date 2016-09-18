@@ -1,11 +1,10 @@
-FROM frolvlad/alpine-glibc:alpine-3.3_glibc-2.23
+FROM ubuntu:14.04
 
-MAINTAINER zopanix <zopanix@gmail.com>
+MAINTAINER Jason Rivers <docker@jasonrivers.co.uk>
 
 WORKDIR /opt
 
 COPY ./new_smart_launch.sh /opt/
-COPY ./factorio.crt /opt/
 
 VOLUME /opt/factorio/saves /opt/factorio/mods
 
@@ -14,13 +13,11 @@ EXPOSE 27015/tcp
 
 CMD ["./new_smart_launch.sh"]
 
-ENV FACTORIO_AUTOSAVE_INTERVAL=2 \
+ENV FACTORIO_BUILD=stable \
+    FACTORIO_AUTOSAVE_INTERVAL=2 \
     FACTORIO_AUTOSAVE_SLOTS=3 \
     FACTORIO_ALLOW_COMMANDS=false \
     FACTORIO_NO_AUTO_PAUSE=false \
-    FACTORIO_LATENCY_MS=100 \
-    VERSION=0.13.16 \
-    FACTORIO_SHA1=52de126ce47bf24b795db07ff83ed13f8f537c0c \
     FACTORIO_WAITING=false \
     FACTORIO_MODE=normal \
     FACTORIO_SERVER_NAME= \
@@ -29,14 +26,17 @@ ENV FACTORIO_AUTOSAVE_INTERVAL=2 \
     FACTORIO_SERVER_VISIBILITY= \
     FACTORIO_USER_USERNAME= \
     FACTORIO_USER_PASSWORD= \
-#    FACTORIO_USER_TOKEN= \
     FACTORIO_SERVER_GAME_PASSWORD= \
-    FACTORIO_SERVER_VERIFY_IDENTITY=
+    FACTORIO_SERVER_VERIFY_IDENTITY= \
+    FACTORIO_SERVER_VERSION=
 
-RUN apk --update add bash curl && \
-    curl -sSL --cacert /opt/factorio.crt https://www.factorio.com/get-download/$VERSION/headless/linux64 -o /tmp/factorio_headless_x64_$VERSION.tar.gz && \
-    echo "$FACTORIO_SHA1  /tmp/factorio_headless_x64_$VERSION.tar.gz" | sha1sum -c && \
-    tar xzf /tmp/factorio_headless_x64_$VERSION.tar.gz && \
-    rm /tmp/factorio_headless_x64_$VERSION.tar.gz && \
-    apk del curl
+RUN  apt-get update \
+  && apt-get install -y wget \
+  && rm -rf /var/lib/apt/lists/*
 
+## Pre-load the image with the stable version
+
+RUN  wget -q -O - https://www.factorio.com/download-headless/${FACTORIO_BUILD} | grep -o -m1 "/get-download/.*/headless/linux64" | tee /tmp/factorioV | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.gz"}' | xargs wget \
+  && tar -xzf /tmp/factorio.tar.gz -C /opt \
+  && rm -rf /tmp/factorio.tar.gz    \
+  && cat /tmp/factorioV | sed 's/\/get-download\/\(.*\)\/headless\/linux64/\1/' >> /opt/factorio/currentVersion

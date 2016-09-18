@@ -10,6 +10,26 @@ echo '  \  \::/     \  \::/       \  \:\  /:/  \__\/  \:\   \  \:\  /:/   \  \::
 echo '   \  \:\      \  \:\        \  \:\/:/        \  \:\   \  \:\/:/     \  \:\          /__/:/    \  \:\/:/  '
 echo '    \  \:\      \  \:\        \  \::/          \__\/    \  \::/       \  \:\         \__\/      \  \::/   '
 echo '     \__\/       \__\/         \__\/                     \__\/         \__\/                     \__\/    '
+echo ''
+echo 'Downloading latest Factorio version'
+
+if [ -z $FACTORIO_SERVER_VERSION ]; then
+
+    if [ "$FACTORIO_BUILD" == "experimental" ]; then
+        factorio_build="experimental"
+    else
+        factorio_build="stable"
+    fi
+    echo "Downloading Factorio latest ${factorio_build} release"
+    wget -q -O - https://www.factorio.com/download-headless/${factorio_build} | grep -o -m1 "/get-download/.*/headless/linux64" | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.gz"}' | xargs wget
+else
+    echo "Downloading Factorio version ${FACTORIO_SERVER_VERSION}"
+    wget --no-check-certificate -O /tmp/factorio.tar.gz https://www.factorio.com/get-download/${FACTORIO_SERVER_VERSION}/headless/linux64
+
+fi
+    tar -xzf /tmp/factorio.tar.gz -C /opt
+    rm -rf /tmp/factorio.tar.gz
+
 # Checking if server is ready 
 if [ $FACTORIO_WAITING == true ] 
 then 
@@ -120,8 +140,6 @@ if [ "$FACTORIO_NO_AUTO_PAUSE" == true ]
 then
 factorio_command="$factorio_command --no-auto-pause"
 fi
-# Setting latency-ms option
-factorio_command="$factorio_command --latency-ms $FACTORIO_LATENCY_MS"
 # Setting autosave-interval option
 factorio_command="$factorio_command --autosave-interval $FACTORIO_AUTOSAVE_INTERVAL"
 # Setting autosave-slots option
@@ -174,9 +192,9 @@ then
     echo "###"
   else
     echo "###"
-    echo "# Creating a new map [save.zip]"
+    echo "# Creating a new map [server.zip]"
     echo "###"
-    /opt/factorio/bin/x64/factorio --create save.zip
+    /opt/factorio/bin/x64/factorio --create server.zip
   fi
   factorio_command="$factorio_command --start-server-load-latest"
 else
