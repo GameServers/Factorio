@@ -2,21 +2,25 @@ Factorio
 ===== 
 Factorio Server in docker
 
-[![Build Status](https://travis-ci.org/zopanix/docker_factorio_server.svg?branch=master)](https://travis-ci.org/zopanix/docker_factorio_server)
+[![Build Status](https://travis-ci.org/GameServers/Factorio.svg?branch=master)](https://travis-ci.org/GameServers/Factorio)
 
 Current Version
 -----
-0.13.13
+ * Master Branch = Experimental
+ * Stable Branch = Stable
+ * Tags for fixed releases
+
 ### What's new ?
+-----
+Automatically keep the image up to date when the docker container is started up
 #### Factorio
 See [factorio's site](http://www.factorio.com)
 #### Docker image
-* New semver for version !!!Tags have changed now!!!
 * Automated build with travis 
 
 Versions
 -----
-I'm keeping the image up to date. If you need to use an older version, checkout out the different [tags](https://hub.docker.com/r/zopanix/factorio/tags/).
+This image will update itself on a docker run command, if you wish to use a specific version either use a tag or set FACTORIO_SERVER_VERSION=${version_number} when running the container.
 
 How to use ?
 -----
