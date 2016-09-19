@@ -101,26 +101,29 @@ fi
 SERVER_SETTINGS=/opt/factorio/server-settings.json
 cat << EOF > $SERVER_SETTINGS
 {
-"name": "$FACTORIO_SERVER_NAME",
-"description": "$FACTORIO_SERVER_DESCRIPTION",
-"max_players": "$FACTORIO_SERVER_MAX_PLAYERS",
+  "name": "${FACTORIO_SERVER_NAME}",
+  "description": "${FACTORIO_SERVER_DESCRIPTION}",
+  "tags": ["game", "tags"],
+  "max_players": "${FACTORIO_SERVER_MAX_PLAYERS}",
 
-"_comment_visibility": ["public: Game will be published on the official Factorio matching server",
-                        "lan: Game will be broadcast on LAN",
-                        "hidden: Game will not be published anywhere"],
-"visibility": "$FACTORIO_SERVER_VISIBILITY",
+  "_comment_visibility": ["public: Game will be published on the official Factorio matching server",
+  "lan: Game will be broadcast on LAN",
+  "hidden: Game will not be published anywhere"],
+  "visibility": "${FACTORIO_SERVER_VISIBILITY}",
 
-"_comment_credentials": "Your factorio.com login credentials. Required for games with visibility public",
-"username": "$FACTORIO_USER_USERNAME",
-"password": "$FACTORIO_USER_PASSWORD",
+  "_comment_credentials": "Your factorio.com login credentials. Required for games with visibility public",
+  "username": "${FACTORIO_USER_USERNAME}",
+  "password": "${FACTORIO_USER_PASSWORD}",
 
-"_comment_token": "Authentication token. May be used instead of 'password' above.",
-"token": "$FACTORIO_USER_TOKEN",
+  "_comment_token": "Authentication token. May be used instead of 'password' above.",
+  "token": "${FACTORIO_USER_TOKEN}",
 
-"game_password": "$FACTORIO_SERVER_GAME_PASSWORD",
+  "game_password": "${FACTORIO_SERVER_GAME_PASSWORD}",
 
-"_comment_verify_user_identity": "When set to true, the server will only allow clients that have a valid Factorio.com account",
-"verify_user_identity": $FACTORIO_SERVER_VERIFY_IDENTITY
+  "_comment_verify_user_identity": "When set to true, the server will only allow clients that have a valid Factorio.com account",
+  "verify_user_identity": ${FACTORIO_SERVER_VERIFY_IDENTITY},
+  "_commend_max_upload_in_kilobytes_per_second" : "optional, default value is 0. 0 means unlimited.",
+  "max_upload_in_kilobytes_per_second": 0
 }
 EOF
 # Setting heavy mode option
