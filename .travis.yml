@@ -5,7 +5,7 @@ before_install:
   # see https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings
   # - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 script:
-  - docker build -t "GameServers/factorio:${TRAVIS_TAG}" .
+  - docker build -t "GameServers/factorio" .
 #deploy:
 #  provider: script
 #  script: docker tag "zopanix/factorio:${TRAVIS_TAG}" "zopanix/factorio:latest" && docker push "zopanix/factorio:${TRAVIS_TAG}" && docker push "zopanix/factorio:latest"
