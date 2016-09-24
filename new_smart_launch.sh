@@ -54,24 +54,24 @@ if [ "$FACTORIO_SERVER_NAME" ] \
 then
   factorio_command="$factorio_command --server-settings /opt/factorio/server-settings.json"
   # Set Server Name default value if not set by user param
-  if [ -z $FACTORIO_SERVER_NAME ]
+  if [ -z "$FACTORIO_SERVER_NAME" ]
   then
     FACTORIO_SERVER_NAME="Factorio Server $VERSION"
   fi
   # Set Visibility default value if not set by user param
-  if [ -z $FACTORIO_SERVER_VISIBILITY ]
+  if [ -z "$FACTORIO_SERVER_VISIBILITY" ]
   then
     FACTORIO_SERVER_VISIBILITY="hidden"
   fi
   # Set Verify User Identity default value if not set by user param
-  if [ -z $FACTORIO_SERVER_VERIFY_IDENTITY ]
+  if [ -z "$FACTORIO_SERVER_VERIFY_IDENTITY" ]
   then
     FACTORIO_SERVER_VERIFY_IDENTITY="false"
   fi
   # Check for supplied credentials if visibility is set to public
   if [ "$FACTORIO_SERVER_VISIBILITY" == "public" ]
   then
-    if [ -z $FACTORIO_USER_USERNAME ]
+    if [ -z "$FACTORIO_USER_USERNAME" ]
     then
       echo "###"
       echo "# Server Visibility is set to public but no factorio.com Username is supplied!"
@@ -181,6 +181,10 @@ then
   echo "# Factorio Password = '$FACTORIO_USER_PASSWORD'"
 #  echo "# Factorio User Token = '$FACTORIO_USER_TOKEN'"
   echo "###"
+fi
+
+if [ "$FACTORIO_SERVER_PORT" ]; then
+    sed -i -s "s/^port=.*/port=${FACTORIO_SERVER_PORT}/" /opt/factorio/config/config.ini
 fi
 # TODO Adding this because of bug, will need to be removed once bug in factorio is fixed
 cd /opt/factorio/saves
