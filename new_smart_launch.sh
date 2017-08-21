@@ -21,14 +21,14 @@ if [ -z $FACTORIO_SERVER_VERSION ]; then
         factorio_build="stable"
     fi
     echo "Downloading Factorio latest ${factorio_build} release"
-    wget -q -O - https://www.factorio.com/download-headless/${factorio_build} | grep -o -m1 "/get-download/.*/headless/linux64" | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.gz"}' | xargs wget
+    wget -q -O - https://www.factorio.com/download-headless/${factorio_build} | grep -o -m1 "/get-download/.*/headless/linux64" | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.xz"}' | xargs wget
 else
     echo "Downloading Factorio version ${FACTORIO_SERVER_VERSION}"
-    wget --no-check-certificate -O /tmp/factorio.tar.gz https://www.factorio.com/get-download/${FACTORIO_SERVER_VERSION}/headless/linux64
+    wget --no-check-certificate -O /tmp/factorio.tar.xz https://www.factorio.com/get-download/${FACTORIO_SERVER_VERSION}/headless/linux64
 
 fi
-    tar -xzf /tmp/factorio.tar.gz -C /opt
-    rm -rf /tmp/factorio.tar.gz
+    tar xf /tmp/factorio.tar.xz -C /opt
+    rm -rf /tmp/factorio.tar.xz
 
 # Checking if server is ready 
 if [ $FACTORIO_WAITING == true ] 

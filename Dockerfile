@@ -31,12 +31,12 @@ ENV FACTORIO_BUILD=stable \
     FACTORIO_SERVER_VERSION=
 
 RUN  apt-get update \
-  && apt-get install -y wget \
+  && apt-get install -y wget xz-utils \
   && rm -rf /var/lib/apt/lists/*
 
 ## Pre-load the image with the stable version
 
-RUN  wget -q -O - https://www.factorio.com/download-headless/${FACTORIO_BUILD} | grep -o -m1 "/get-download/.*/headless/linux64" | tee /tmp/factorioV | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.gz"}' | xargs wget \
-  && tar -xzf /tmp/factorio.tar.gz -C /opt \
-  && rm -rf /tmp/factorio.tar.gz    \
+RUN  wget -q -O - https://www.factorio.com/download-headless/${FACTORIO_BUILD} | grep -o -m1 "/get-download/.*/headless/linux64" | tee /tmp/factorioV | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.xz"}' | xargs wget \
+  && tar xf /tmp/factorio.tar.xz -C /opt \
+  && rm -rf /tmp/factorio.tar.xz    \
   && cat /tmp/factorioV | sed 's/\/get-download\/\(.*\)\/headless\/linux64/\1/' >> /opt/factorio/currentVersion
