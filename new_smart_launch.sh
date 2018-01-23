@@ -18,7 +18,7 @@ if [ -z $FACTORIO_SERVER_VERSION ]; then
     if [ "$FACTORIO_BUILD" == "experimental" ]; then
         factorio_build="experimental"
     else
-        factorio_build="stable"
+        factorio_build=""
     fi
     echo "Downloading Factorio latest ${factorio_build} release"
     wget -q -O - https://www.factorio.com/download-headless/${factorio_build} | grep -o -m1 "/get-download/.*/headless/linux64" | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.xz"}' | xargs wget
