@@ -17,11 +17,13 @@ if [ -z $FACTORIO_SERVER_VERSION ]; then
 
     if [ "$FACTORIO_BUILD" == "experimental" ]; then
         factorio_build="experimental"
+        factorio_url="https://www.factorio.com/download-headless/${factorio_build}"
     else
         factorio_build=""
+        factorio_url="https://www.factorio.com/download-headless"
     fi
     echo "Downloading Factorio latest ${factorio_build} release"
-    wget -q -O - https://www.factorio.com/download-headless/${factorio_build} | grep -o -m1 "/get-download/.*/headless/linux64" | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.xz"}' | xargs wget
+    wget -q -O - ${factorio_url} | grep -o -m1 "/get-download/.*/headless/linux64" | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.xz"}' | xargs wget
 else
     echo "Downloading Factorio version ${FACTORIO_SERVER_VERSION}"
     wget --no-check-certificate -O /tmp/factorio.tar.xz https://www.factorio.com/get-download/${FACTORIO_SERVER_VERSION}/headless/linux64

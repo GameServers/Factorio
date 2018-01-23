@@ -14,7 +14,7 @@ EXPOSE 27015/tcp
 
 CMD ["./new_smart_launch.sh"]
 
-ENV FACTORIO_BUILD=stable \
+ENV FACTORIO_BUILD \
     FACTORIO_AUTOSAVE_INTERVAL=2 \
     FACTORIO_AUTOSAVE_SLOTS=3 \
     FACTORIO_NO_AUTO_PAUSE=false \
@@ -36,7 +36,7 @@ RUN  apt-get update \
 
 ## Pre-load the image with the stable version
 
-RUN  wget -q -O - https://www.factorio.com/download-headless/${FACTORIO_BUILD} | grep -o -m1 "/get-download/.*/headless/linux64" | tee /tmp/factorioV | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.xz"}' | xargs wget \
+RUN  wget -q -O - https://www.factorio.com/download-headless | grep -o -m1 "/get-download/.*/headless/linux64" | tee /tmp/factorioV | awk '{print "--no-check-certificate https://www.factorio.com"$1" -O /tmp/factorio.tar.xz"}' | xargs wget \
   && tar xf /tmp/factorio.tar.xz -C /opt \
   && rm -rf /tmp/factorio.tar.xz    \
   && cat /tmp/factorioV | sed 's/\/get-download\/\(.*\)\/headless\/linux64/\1/' >> /opt/factorio/currentVersion
